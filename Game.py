@@ -12,15 +12,18 @@ class GameSprite(sprite.Sprite):
         window.blit(self.image, (self.rect.x, self.rect.y))
 
 class Player(GameSprite):
-    def update(self):
+    def update_l(self):
         keys = key.get_pressed()
         if keys[K_LEFT] and self.rect.x > 5:
             self.rect.x -= self.speed
         if keys[K_RIGHT] and self.rect.x < win_width - 80:
             self.rect.x += self.speed
-    def fire(self):
-        bullet = Bullet('bullet.png', self.rect.centerx, self.rect.top, 15, 20, -15)
-        bullets.add(bullet)
+    def update_r(self):
+        keys = key.get_pressed()
+        if keys[K_LEFT] and self.rect.x > 5:
+            self.rect.x -= self.speed
+        if keys[K_RIGHT] and self.rect.x < win_width - 80:
+            self.rect.x += self.speed
 
 back = (200, 255, 255)
 win_width = 600
@@ -35,10 +38,10 @@ FPS = 60
 
 racket1 = Player('racket.png',30,200,4,50,150)
 racket2 = Player('racket.png',520,200,4,50,150)
-ball = GameSprite('tenis_ball.png',200,200,4,50,50)
+ball = GameSprite('ball.png',200,200,4,50,50)
 
 font.init()
-font = font.Fon(None, 35)
+font = font.Font(None, 35)
 lose1 = font.render('PLAYER 2 WIN!', True, (180,0,0))
 lose2 = font.render('PLAYER 1 WIN!',True, (180,0,0))
 
@@ -47,7 +50,7 @@ speed_y = 3
 
 while game:
     for e in event.get():
-        if e.tupe == QUIT:
+        if e.type == QUIT:
             game = False
     if finish != True:
         window.fill(back)
@@ -72,3 +75,8 @@ while game:
             finish = True
             window.blit(lose2, (200,200))
             game_over = True
+        racket1.reset()
+        racket2.reset()
+        ball.reset()
+    display.update()
+    clock.tick(FPS)
